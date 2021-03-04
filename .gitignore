@@ -16,3 +16,5 @@ htmlcov/
 .coverage
 .coveragerc
 .env
+
+.travis.yml

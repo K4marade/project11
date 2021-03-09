@@ -15,6 +15,7 @@ api_data_files/
 htmlcov/
 .coverage
 .coveragerc
-.env
+
+pur_beurre/settings/.env
 
 .travis.yml

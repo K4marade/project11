@@ -1,16 +1,35 @@
 language: python
 python:
-  - '3.9'
+  - '3.8'
+
+addons:
+  chrome: stable
+
+#install:
+#  - pip3 install pipenv
+#  - pipenv install
 
 before_script:
+  - echo $PATH
+  - wget -N https://chromedriver.storage.googleapis.com/84.0.4147.30/chromedriver_linux64.zip -P ~/
+  - unzip ~/chromedriver_linux64.zip -d ~/
+  - rm ~/chromedriver_linux64.zip
+  - export CHROME_BIN=chromium-browser
+  - export PATH=$PATH:~/chromedriver_linux64/chromedriver
+  - echo $PATH
+  #- pip install -r requirements.txt
   - pip3 install pipenv
   - pipenv install
 
+
+  # add tchappui-webdrivers in Pipfile
+#  - mkdir webdrivers
+#  - install-webdrivers --path webdrivers
+ # - open -a Google\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+
 env:
-  matrix:
-  - DJANGO_SETTINGS_MODULE="pur_beurre.settings.travis"
   global:
-    secure: DEV_SECRET_KEY=UOR3TW3PJ/a6SV14n/oa7nJSElB/g9ht/nSggfUSp+ta4BWBAIe3W2Y/fcyi1ds1RWcaKIeiEXiIhPHjgWIk14OeqeNLwQeiHyGOUHhbMnVdE2rF7JlnwrYA0wPzS37aDPcRBv9bmKtPmWizNQQeoSD+X0oZsrAy9QvGx/42PZ1Y/DwPxCaCLQAmCDgnhTqN1MGX9HHlIfcTo1YWglQ+bRM71i1HvmINdY2NHc1IrquX6QaPOVtSfYC1Y9GvvTBYk2YPRDGJ4KJidx8FP7SySTQC9cX8Fad6YsQQTNHej82ia47EvnGP16K8iDFXaFSf5yXF3XBH+8IYt14SSU380A/vvzHg+YdTnrzBmsfNyMGexqr7vDSU9c68H5I74DsiSrJ8eQzpErSbgXRmYCdg0zOg1/BMRHvkHXix5xGtP/DXDIHDG/f6x12RtB4qRH73jzcB0n7kr2cQpXPjtOMIPWJ/1xG7847w7bWNx08JiiB/v/X+UXRxWX2jfugTWqfR0/FAtVepSuccrVYwLxzWa5PQCTdKJFprAAvTpQ6cprGj33F68mXHx8fA98n/glfEMCUrW49hWJDJCtFvSGYZAtXvkACIJ68OyjyDqOxsuVRdJ/X1I0837FBOQYfMiAGpguftx0ekeY3bwvdDX8vU+YOejXZVQRUoKQw1BKkcoLo=
+    - DJANGO_SETTINGS_MODULE="pur_beurre.settings.travis"
 
 branches:
   only:
@@ -20,4 +39,4 @@ services:
   - postgresql
 
 script:
-  - pytest
+  - pytest -vv

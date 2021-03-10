@@ -1,5 +1,4 @@
 from . import *
-import os
 
 DATABASES = {
     'default': {
@@ -11,5 +10,3 @@ DATABASES = {
         'PORT': '',
     },
 }
-
-SECRET_KEY = os.environ.get('DEV_SECRET_KEY')

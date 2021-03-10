@@ -20,6 +20,7 @@ django-environ = "*"
 setuptools = "==53.1.0"
 django-widget-tweaks = "*"
 psycopg2-binary = "*"
+travis = "*"
 
 [dev-packages]
 

@@ -17,5 +17,3 @@ htmlcov/
 .coveragerc
 
 pur_beurre/settings/.env
-
-.travis.yml

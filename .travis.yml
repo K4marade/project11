@@ -1,14 +1,20 @@
 language: python
 python:
-  - "3.9"
+  - '3.9'
 
 before_script:
   - pip3 install pipenv
   - pipenv install
 
 env:
+  matrix:
   - DJANGO_SETTINGS_MODULE="pur_beurre.settings.travis"
-  -
+  global:
+    secure: DEV_SECRET_KEY=UOR3TW3PJ/a6SV14n/oa7nJSElB/g9ht/nSggfUSp+ta4BWBAIe3W2Y/fcyi1ds1RWcaKIeiEXiIhPHjgWIk14OeqeNLwQeiHyGOUHhbMnVdE2rF7JlnwrYA0wPzS37aDPcRBv9bmKtPmWizNQQeoSD+X0oZsrAy9QvGx/42PZ1Y/DwPxCaCLQAmCDgnhTqN1MGX9HHlIfcTo1YWglQ+bRM71i1HvmINdY2NHc1IrquX6QaPOVtSfYC1Y9GvvTBYk2YPRDGJ4KJidx8FP7SySTQC9cX8Fad6YsQQTNHej82ia47EvnGP16K8iDFXaFSf5yXF3XBH+8IYt14SSU380A/vvzHg+YdTnrzBmsfNyMGexqr7vDSU9c68H5I74DsiSrJ8eQzpErSbgXRmYCdg0zOg1/BMRHvkHXix5xGtP/DXDIHDG/f6x12RtB4qRH73jzcB0n7kr2cQpXPjtOMIPWJ/1xG7847w7bWNx08JiiB/v/X+UXRxWX2jfugTWqfR0/FAtVepSuccrVYwLxzWa5PQCTdKJFprAAvTpQ6cprGj33F68mXHx8fA98n/glfEMCUrW49hWJDJCtFvSGYZAtXvkACIJ68OyjyDqOxsuVRdJ/X1I0837FBOQYfMiAGpguftx0ekeY3bwvdDX8vU+YOejXZVQRUoKQw1BKkcoLo=
+
+branches:
+  only:
+  - master
 
 services:
   - postgresql

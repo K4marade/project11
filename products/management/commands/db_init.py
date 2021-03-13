@@ -168,22 +168,25 @@ class Database:
                 aliments[cat] = self.cleaned_data(elements)
 
             # insert categories in database
-            for cat in categories:
-                category = Category(name=cat)
-                category.save()
+            if Category.objects.exists():
+                pass
+            else:
+                for cat in categories:
+                    category = Category(name=cat)
+                    category.save()
 
             # insert products in database with a many to many
             # relationship with categories
             for cat, elements in aliments.items():
                 category = Category.objects.get(name=cat)
                 for data in elements:
-                    category.products.create(barcode=data[0],
-                                             name=data[1],
-                                             nutriscore=data[2],
-                                             image=data[3],
-                                             small_image=data[4],
-                                             url=data[5],
-                                             nutrition_img=data[6])
+                    category.products.get_or_create(barcode=data[0],
+                                                    name=data[1],
+                                                    nutriscore=data[2],
+                                                    image=data[3],
+                                                    small_image=data[4],
+                                                    url=data[5],
+                                                    nutrition_img=data[6])
 
 
 class Command(BaseCommand):
@@ -195,28 +198,25 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['add_data']:
             try:
-                if Product.objects.exists() or Category.objects.exists():
-                    pass
-                else:
-                    db = Database()
+                db = Database()
 
-                    #######################################
-                    ### If you wish to refresh OFF data ###
-                    #######################################
-                    # self.stdout.write(self.style.WARNING(
-                    # "Refreshing data, please wait..."))
-                    # db.refresh_data()
-                    # self.stdout.write(self.style.SUCCESS(
-                    # "Data refreshed"))
-                    #######################################
-                    ### If you wish to refresh OFF data ###
-                    #######################################
+                #######################################
+                ### If you wish to refresh OFF data ###
+                #######################################
+                # self.stdout.write(self.style.WARNING(
+                # "Refreshing data, please wait..."))
+                # db.refresh_data()
+                # self.stdout.write(self.style.SUCCESS(
+                # "Data refreshed"))
+                #######################################
+                ### If you wish to refresh OFF data ###
+                #######################################
 
-                    self.stdout.write(self.style.WARNING(
-                        "Inserting data into DB..."))
-                    db.insert_data()
-                    self.stdout.write(self.style.SUCCESS(
-                        "Data inserted successfully !"))
+                self.stdout.write(self.style.WARNING(
+                    "Inserting data into DB..."))
+                db.insert_data()
+                self.stdout.write(self.style.SUCCESS(
+                    "Data inserted successfully !"))
 
             except DatabaseError:
                 self.stderr.write(self.style.ERROR('Failed to insert data.'))

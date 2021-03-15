@@ -5,27 +5,13 @@ python:
 addons:
   chrome: stable
 
-#install:
-#  - pip3 install pipenv
-#  - pipenv install
-
-before_script:
-  - echo $PATH
-  - wget -N https://chromedriver.storage.googleapis.com/84.0.4147.30/chromedriver_linux64.zip -P ~/
-  - unzip ~/chromedriver_linux64.zip -d ~/
-  - rm ~/chromedriver_linux64.zip
-  - export CHROME_BIN=chromium-browser
-  - export PATH=$PATH:~/chromedriver_linux64/chromedriver
-  - echo $PATH
-  #- pip install -r requirements.txt
+install:
   - pip3 install pipenv
   - pipenv install
 
-
-  # add tchappui-webdrivers in Pipfile
-#  - mkdir webdrivers
-#  - install-webdrivers --path webdrivers
- # - open -a Google\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+before_script:
+  - export PATH=$PATH:$PWD/webdrivers/
+  - install-webdrivers --path webdrivers
 
 env:
   global:

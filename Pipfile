@@ -19,8 +19,8 @@ django-heroku = "*"
 django-environ = "*"
 setuptools = "==53.1.0"
 django-widget-tweaks = "*"
-psycopg2-binary = "*"
 tchappui-webdrivers = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

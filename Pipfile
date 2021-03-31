@@ -21,6 +21,7 @@ setuptools = "==53.1.0"
 django-widget-tweaks = "*"
 tchappui-webdrivers = "*"
 psycopg2-binary = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 

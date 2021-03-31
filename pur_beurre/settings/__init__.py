@@ -26,13 +26,11 @@ environ.Env.read_env()
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DEV_SECRET_KEY')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if os.environ.get('ENV', 'development') == 'production' else True
@@ -53,6 +51,7 @@ INSTALLED_APPS = [
     'products',
     'widget_tweaks',
     'fontawesome-free',
+    'crispy_forms',
 
 ]
 
@@ -142,8 +141,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 AUTH_USER_MODEL = 'account.UserAuth'
 
 MESSAGE_TAGS = {
@@ -153,3 +150,14 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+# SMTP configuration
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env('GMAIL_USER')
+EMAIL_HOST_PASSWORD = env('GMAIL_PASS')
+

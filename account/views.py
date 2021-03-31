@@ -85,3 +85,4 @@ def favorite_view(request):
     current_user = UserAuth.objects.get(id=request.session['_auth_user_id'])
     favorites = Product.objects.filter(ali_sub__user_id=current_user)
     return render(request, 'account/favorite.html', {'favorites': favorites})
+

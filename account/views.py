@@ -31,20 +31,14 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+            username = form.cleaned_data.get('usernames')
+            raw_password = form.cleaned_data.get('password3')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             messages.success(request, "Bienvenue " + username + " !")
             return redirect('home')
 
     return render(request, 'registration/register.html', locals())
-
-
-# @unauthenticated_user
-# class MyLoginView(SuccessMessageMixin, LoginView):
-#     template_name = 'registration/login.html'
-#     success_message = 'Welcome to your profile'
 
 
 def logout_view(request):

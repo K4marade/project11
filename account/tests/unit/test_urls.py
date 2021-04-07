@@ -33,3 +33,27 @@ class TestUrls:
 
         path = reverse('favorite')
         assert resolve(path).view_name == 'favorite'
+
+    def test_password_reset_url(self):
+        """Tests password reset url"""
+
+        path = reverse('password_reset')
+        assert resolve(path).view_name == 'password_reset'
+
+    def test_password_sent_url(self):
+        """Tests password reset url"""
+
+        path = reverse('password_reset_done')
+        assert resolve(path).view_name == 'password_reset_done'
+
+    # def test_password_confirm_url(self):
+    #     """Tests password confirm url"""
+    #
+    #     path = reverse('password_reset_confirm')
+    #     assert resolve(path).view_name == 'password_reset_confirm'
+
+    def test_password_complete_url(self):
+        """Tests password complete url"""
+
+        path = reverse('password_reset_complete')
+        assert resolve(path).view_name == 'password_reset_complete'

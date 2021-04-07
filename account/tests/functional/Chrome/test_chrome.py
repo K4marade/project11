@@ -3,7 +3,9 @@ from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.core import mail
 import time
+import re
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
@@ -99,3 +101,52 @@ class ChromeFunctionalTestCase(StaticLiveServerTestCase):
         self.get_element("#button-validate").click()
         time.sleep(1)
         assert "Bienvenue Leonard" in self.driver.page_source
+
+    def test_user_can_reset_password(self):
+        self.user.objects.create_user(
+            username="LeonardCOLIN",
+            password="1234Testing!",
+            email="testing@purbeurre.com"
+        )
+
+        self.driver.get(self.live_server_url)
+
+        # User is on the homage and clicks on the login button
+        self.get_element("#button-login").click()
+
+        # Assert the current url is the login url
+        assert self.driver.current_url == self.live_server_url + reverse(
+            'login') + "?next=/"
+        time.sleep(2)
+
+        # User clicks on the "forgotten password" button
+        self.get_element("#button-reset-password").click()
+        time.sleep(1)
+
+        # User puts his email and clicks on the "Send" button
+        self.get_element("#id_email").send_keys("testing@purbeurre.com")
+        self.get_element("#button-confirm").click()
+
+        # assert one message has been sent
+        assert len(mail.outbox) == 1
+
+        # get the unique url from the message
+        message = mail.outbox[0].body
+        url = re.findall(r'(https?://\S+)', message)
+        self.driver.get(url[0])
+        time.sleep(1)
+
+        # User puts his new password twice and clicks on the confirm button
+        self.get_element("#id_new_password1").send_keys("TestingNewPassword12345")
+        self.get_element("#id_new_password2").send_keys("TestingNewPassword12345")
+        self.get_element("#button-confirm").click()
+        time.sleep(2)
+
+        # User clicks on the login button
+        self.get_element("#connexion").click()
+        time.sleep(1)
+
+        # User is logging in with his new password
+        self.get_element("#id_username").send_keys("LeonardCOLIN")
+        self.get_element("#id_password").send_keys("TestingNewPassword12345")
+        self.get_element("#button-connexion").click()

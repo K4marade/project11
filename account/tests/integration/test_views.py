@@ -1,6 +1,9 @@
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core import mail
 from django.urls import reverse
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
+import re
 
 
 class TestViews(TestCase):
@@ -95,3 +98,57 @@ class TestViews(TestCase):
         favorite_url = reverse("favorite")
         response = self.c.get(favorite_url)
         assert response.status_code == 200
+
+    def test_reset_password_view(self):
+        """test the reset password view"""
+
+        self.user.objects.create_user(username="Leonard",
+                                      email="leo@leo.com",
+                                      password="12345Testing")
+
+        reset_password_url = reverse("password_reset")
+        assert self.c.get(reset_password_url).status_code == 200
+
+        response_email_sent = self.c.post(reset_password_url, {"email": "leo@leo.com"})
+
+        assert response_email_sent.status_code == 302
+        assert response_email_sent.url == reverse("password_reset_done")
+        assert len(mail.outbox) == 1
+
+        email_msg = mail.outbox[0].body
+        uidb64, token = re.findall(
+            r"/([\w\-]+)",
+            re.search(r"^http\://.+$", email_msg, flags=re.MULTILINE)[0])[3:5]
+
+        msg_reset_url = reverse("password_reset_confirm", args=(uidb64, token))
+        response_reset_url = self.c.get(msg_reset_url, follow=True)
+        assert response_reset_url.status_code == 200
+
+        confirm_reset_url = reverse("password_reset_confirm", args=(uidb64, "set-password"))
+        response_confirm_reset_password = self.c.post(confirm_reset_url,
+                                                      {"new_password1": "TestingReset12345",
+                                                       "new_password2": "TestingReset12345"},
+                                                      follow=True)
+
+        assert response_confirm_reset_password.status_code == 200
+        assert self.c.login(username="Leonard", password="TestingReset12345") is True
+
+    def test_change_password_view(self):
+        """tests the change password view"""
+
+        self.user.objects.create_user(username="Leonard",
+                                      email="leo@leo.com",
+                                      password="12345Testing")
+
+        self.c.login(username="Leonard", password="12345Testing")
+
+        change_password_url = reverse("password_change")
+        assert self.c.get(change_password_url).status_code == 200
+
+        response = self.c.post(change_password_url, {"old_password": "12345Testing",
+                                                     "new_password1": "Testing12345",
+                                                     "new_password2": "Testing12345"})
+
+        assert response.status_code == 302
+        assert response.url == reverse("password_change_done")
+        assert self.c.login(username="Leonard", password="Testing12345") is True

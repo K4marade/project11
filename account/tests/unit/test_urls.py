@@ -57,3 +57,15 @@ class TestUrls:
 
         path = reverse('password_reset_complete')
         assert resolve(path).view_name == 'password_reset_complete'
+
+    def test_password_change_url(self):
+        """Tests password change url"""
+
+        path = reverse('password_change')
+        assert resolve(path).view_name == 'password_change'
+
+    def test_password_change_done_url(self):
+        """Tests password change done url"""
+
+        path = reverse('password_change_done')
+        assert resolve(path).view_name == 'password_change_done'

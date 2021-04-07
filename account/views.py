@@ -31,8 +31,8 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('usernames')
-            raw_password = form.cleaned_data.get('password3')
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             messages.success(request, "Bienvenue " + username + " !")

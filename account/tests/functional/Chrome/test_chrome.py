@@ -61,7 +61,7 @@ class ChromeFunctionalTestCase(StaticLiveServerTestCase):
         self.get_element("#id_password").send_keys("1234Testing!")
         self.get_element("#button-connexion").click()
 
-        time.sleep(3)
+        time.sleep(2)
 
         # Assert the current url is the home url
         assert self.driver.current_url == self.live_server_url + \
@@ -150,3 +150,57 @@ class ChromeFunctionalTestCase(StaticLiveServerTestCase):
         self.get_element("#id_username").send_keys("LeonardCOLIN")
         self.get_element("#id_password").send_keys("TestingNewPassword12345")
         self.get_element("#button-connexion").click()
+
+    def test_user_can_change_password(self):
+        self.user.objects.create_user(
+            username="LeonardCOLIN",
+            password="1234Testing!",
+            email="testing@purbeurre.com"
+        )
+
+        self.driver.get(self.live_server_url)
+
+        # User is on the homepage and clicks on the login button
+        self.get_element("#button-login").click()
+        time.sleep(1)
+
+        self.get_element("#id_username").send_keys("LeonardCOLIN")
+        self.get_element("#id_password").send_keys("1234Testing!")
+        self.get_element("#button-connexion").click()
+        time.sleep(2)
+
+        # User is connected, on the homage and clicks on the account profile button
+        self.get_element("#button-profile").click()
+        time.sleep(1)
+
+        # User clicks on the change password link
+        self.get_element("#button-change-password").click()
+        time.sleep(2)
+
+        # User puts his old and new passwords
+        self.get_element("#id_old_password").send_keys("1234Testing!")
+        self.get_element("#id_new_password1").send_keys("TestingChange1234")
+        self.get_element("#id_new_password2").send_keys("TestingChange1234")
+        self.get_element("#button-confirm").click()
+        time.sleep(2)
+
+        # User clicks on the logout button
+        self.get_element("#button-logout").click()
+        time.sleep(1)
+        self.get_element("#close-cross-button").click()
+
+        # User clicks on the login button
+        self.get_element("#button-login").click()
+        time.sleep(1)
+
+        # User logs in using his new password
+        self.get_element("#id_username").send_keys("LeonardCOLIN")
+        self.get_element("#id_password").send_keys("TestingChange1234")
+        self.get_element("#button-connexion").click()
+        time.sleep(2)
+
+        # Assert the profile link is available once user is authenticated with his new password
+        assert "button-profile" in self.driver.page_source
+
+
+

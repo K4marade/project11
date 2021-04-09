@@ -201,6 +201,3 @@ class ChromeFunctionalTestCase(StaticLiveServerTestCase):
 
         # Assert the profile link is available once user is authenticated with his new password
         assert "button-profile" in self.driver.page_source
-
-
-

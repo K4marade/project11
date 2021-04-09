@@ -17,3 +17,4 @@ htmlcov/
 .coveragerc
 
 pur_beurre/settings/.env
+.flake8

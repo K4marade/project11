@@ -1,4 +1,3 @@
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core import mail
 from django.urls import reverse
 from django.test import Client, TestCase

@@ -11,12 +11,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from django.contrib import messages
-from django.contrib.messages import constants as message_constants
+# from django.contrib.messages import constants as message_constants
 from django.urls import reverse_lazy
 
 import os
 import environ
-import django_heroku
 
 # Initialise environment variables
 env = environ.Env()
@@ -160,4 +159,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('GMAIL_USER')
 EMAIL_HOST_PASSWORD = env('GMAIL_PASS')
-

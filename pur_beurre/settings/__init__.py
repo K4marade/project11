@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from django.contrib import messages
-from django.contrib.messages import constants as message_constants
 from django.urls import reverse_lazy
 
 import os
